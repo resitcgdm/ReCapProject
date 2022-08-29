@@ -18,18 +18,31 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
+        public void Add(Color color)
+        {
+            _colorDal.Add(color);
+        }
+
+        public void Delete(Color color)
+        {
+            _colorDal.Delete(color);    
+        }
+
         public List<Color> GetAll()
         {
             return _colorDal.GetAll();
         }
 
-
-
-        public List<Color> GetById(int id)
+        public List<Color> GetByColorId(int colorId)
         {
-            return _colorDal.GetAll(c => c.ColorId == id);
+            return _colorDal.GetAll(c=>c.ColorId==colorId).ToList();
         }
 
+      
 
+        public void Update(Color color)
+        {
+            _colorDal.Update(color);
+        }
     }
 }

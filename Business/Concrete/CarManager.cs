@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataAccess.Concrete.EntityFramework;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -18,20 +20,42 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        public void Add(Car car)
+        {
+            _carDal.Add(car);
+        }
+
+        public void Delete(Car car)
+        {
+            _carDal.Delete(car);
+        }
+
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
         }
 
-        public List<Car> GetCarsByBrandId(int id)
+        public List<Car> GetByBrandId(int brandId)
         {
-            var result = _carDal.GetAll().Where(b => b.BrandId == id).OrderBy(b => b.DailyPrice > 0).ToList();
-            return result;
+          return  _carDal.GetAll(c => c.BrandId == brandId).ToList();
         }
 
-        public List<Car> GetCarsByColorId(int id)
+        public List<Car> GetByColorId(int colorId)
         {
-            return _carDal.GetAll().Where(c => c.ColorId == id).OrderBy(b => b.DailyPrice > 0).ToList();
+           return _carDal.GetAll(c => c.ColorId == colorId).ToList();
+        }
+
+     
+
+        public void Update(Car car)
+        {
+            _carDal.Update(car);
+
+        }
+
+       public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
         }
     }
 }
