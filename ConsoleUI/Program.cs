@@ -7,13 +7,21 @@ using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.inMemory;
 
 CarManager carManager = new CarManager(new EfCarDal());
-foreach (var cm in carManager.GetAll())
+//birinci gösterim
+var result = carManager.GetCarDetails();
+if (result.Success==true)
 {
-    Console.WriteLine(cm.Description);
+    foreach (var car in result.Data)
+    {
+        Console.WriteLine(car.CarName);
+    }
 }
+//ikinci gösterim
 BrandManager brandManager=new BrandManager(new EfBrandDal());
-foreach (var bm in brandManager.GetAll())
+if(brandManager.GetAll().Success==true) {
+foreach (var bm in brandManager.GetAll().Data)
 
 {
     Console.WriteLine(bm.BrandId);
+}
 }
