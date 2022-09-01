@@ -8,16 +8,20 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class SampleDatabase:DbContext
+    public class SampleDatabase : DbContext
     {
-      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=C:\USERS\EMIN_\SOURCE\REPOS\SAMPLEDATABASEWALKTHROUGH\SAMPLEDATABASEWALKTHROUGH\DATABASESAMPLE.MDF;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-CGLV6T1\TEW_SQLEXPRESS;Database=SampleDataBase.mdf;Trusted_Connection=true");
         }
-                    
-        public DbSet<Car>Cars { get; set; }
-        public DbSet<Brand>Brands { get; set; } 
-        public DbSet<Color>Colors { get; set; }
+
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
+
 
     }
 }
