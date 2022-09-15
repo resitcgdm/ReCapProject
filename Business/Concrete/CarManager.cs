@@ -11,6 +11,10 @@ using Entities.DTOs;
 using Core.Utilities.Results;
 using Business.Constants;
 using System.Net.Http.Headers;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -23,12 +27,17 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.CarName.Length < 2)
-            {
-                return new ErrorDataResult<List<Car>>(Messages.CarNameInvalid);
-            }
+            
+           
+            //Loglama
+            //cacheremove
+            //performance
+            //transaction
+            //yetkilendirme(autorazthion)
+
             _carDal.Add(car);
             return new SuccessDataResult<List<Car>>(Messages.CarAdded);
         }
@@ -41,7 +50,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {   
-            if(DateTime.Now.Hour==4)
+            if(DateTime.Now.Hour==5)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
