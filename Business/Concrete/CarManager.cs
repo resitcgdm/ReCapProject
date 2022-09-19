@@ -15,32 +15,73 @@ using FluentValidation;
 using Business.ValidationRules.FluentValidation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Aspects.Autofac.Validation;
+using Business.CCS;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Core.Utilities.Business;
 
 namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        IBrandService _brandService; //arabadan bağımsız sadece markalarımızı yönetmek istediğimiz için service cagırırız.
 
-        public CarManager(ICarDal carDal)
-        {
+
+        public CarManager(ICarDal carDal, IBrandService brandService)
+        {   
+
             _carDal = carDal;
+            _brandService = brandService;
+            
         }
 
-        [ValidationAspect(typeof(CarValidator))]
+        [ValidationAspect(typeof(CarValidator))] //attribute,autofac sayesinde.
         public IResult Add(Car car)
         {
-            
-           
+            IResult result = BusinessRules.Run(CheckIfCarCountOfBrandCorrect(car.BrandId), CheckIfNameOfCarCorrect(car.CarName), CheckIfCategoryLimitExceded());
+
+            if(result!=null)
+            {
+                return result;
+            }
+            _carDal.Add(car);
+
+            return new SuccessResult(Messages.CarAdded);
+
+
+            if (CheckIfCarCountOfBrandCorrect(car.BrandId).Success)
+                
+            {
+              
+            }
+
+            else
+            {
+                return new ErrorResult();
+            }
+
+            if (CheckIfNameOfCarCorrect(car.CarName).Success)
+            {
+                _carDal.Add(car);
+                return new SuccessResult(Messages.CarAdded);
+            }
+            else
+            {
+                return new ErrorResult();
+            }
+
+        }
+          
+          
+
             //Loglama
             //cacheremove
             //performance
             //transaction
             //yetkilendirme(autorazthion)
 
-            _carDal.Add(car);
-            return new SuccessDataResult<List<Car>>(Messages.CarAdded);
-        }
+
+       
 
         public IResult Delete(Car car)
         {
@@ -59,6 +100,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetByBrandId(int brandId)
         {
+            //Select Count(*) from Car Where BrandId=ne gönderdiysek => işlevi
           return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId).ToList());
         }
 
@@ -86,5 +128,46 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.CarId ==carId));
         }
+
+        private IResult CheckIfCarCountOfBrandCorrect(int brandId)
+        { //Aynı markadan en fazla 15 araba lislenmesi durumunda iş kodu olarak bunu yazmalıyız.
+            var result = _carDal.GetAll(b => b.BrandId == brandId).Count;
+            if (result >= 15)
+            {
+                return new ErrorResult(Messages.CarCountOfBrandError);
+            }
+            else
+                return new SuccessResult();
+        }
+        //Aynı isimde araba eklenemez (daha önceden aynı isimle eklenmmiş gir araba)
+        
+        private IResult CheckIfNameOfCarCorrect(string carName)
+        {
+            var result = _carDal.GetAll(c => c.CarName == carName).Any();
+            
+            if (result)
+            {
+                return new ErrorResult(Messages.CarNameAlreadyExists);
+            }
+            else
+            {
+                return new SuccessResult();
+            }
+            
+        }
+        private IResult CheckIfCategoryLimitExceded()  //eğer bu kuralı categorymanager'a yazarsak servis olmuş olur.
+        {
+            var result = _brandService.GetAll();
+            if(result.Data.Count>15)
+            {
+                return new ErrorResult(Messages.CategoryLimitExceded);
+
+            }
+            else
+            {
+                return new SuccessResult();
+            }
+        }
     }
-}
+        
+    }
