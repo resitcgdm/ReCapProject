@@ -25,34 +25,34 @@ static void UserManagerTest()
     }
 }
 
-static void BrandManagerTest()
-{
-    BrandManager brandManager = new BrandManager(new EfBrandDal());
-    if (brandManager.GetAll().Success == true)
-    {
-        foreach (var bm in brandManager.GetAll().Data)
+//static void BrandManagerTest()
+//{
+//    BrandManager brandManager = new BrandManager(new EfBrandDal());
+//    if (brandManager.GetAll().Success == true)
+//    {
+//        foreach (var bm in brandManager.GetAll().Data)
 
-        {
-            Console.WriteLine(bm.BrandId);
-        }
-    }
+//        {
+//            Console.WriteLine(bm.BrandId);
+//        }
+//    }
 
-    RentalManager rentalManager = new RentalManager(new EfRentalDal());
-    var result = rentalManager.Add(new Rental { CarId = 1, CustomerId = 1, RentDate = new DateTime(2022, 08, 31, 18, 19, 22) });
-    Console.WriteLine(result.Success);
-    Console.WriteLine(result.Message);
-}
+//    RentalManager rentalManager = new RentalManager(new EfRentalDal());
+//    var result = rentalManager.Add(new Rental { CarId = 1, CustomerId = 1, RentDate = new DateTime(2022, 08, 31, 18, 19, 22) });
+//    Console.WriteLine(result.Success);
+//    Console.WriteLine(result.Message);
+//}
 
-static void CarManagerTest()
-{
-    CarManager carManager = new CarManager(new EfCarDal());
-    //birinci gösterim
-    var result = carManager.GetCarDetails();
-    if (result.Success == true)
-    {
-        foreach (var car in result.Data)
-        {
-            Console.WriteLine(car.CarName);
-        }
-    }
-}
+//static void CarManagerTest()
+//{
+//    CarManager carManager = new CarManager(new EfCarDal());
+//    //birinci gösterim
+//    var result = carManager.GetCarDetails();
+//    if (result.Success == true)
+//    {
+//        foreach (var car in result.Data)
+//        {
+//            Console.WriteLine(car.CarName);
+//        }
+//    }
+//}

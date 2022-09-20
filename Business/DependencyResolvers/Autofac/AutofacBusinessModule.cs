@@ -5,6 +5,7 @@ using Business.CCS;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.DataAccess.EntityFramework;
+using Core.Utilities.Helpers.FileHelper;
 using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -37,6 +38,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<RentalManager>().As<IRentalService>().SingleInstance();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>().SingleInstance();
           
+            builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
+            builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
+
             //eğer birisi senden IRentalDal isterse ona EfRentaldal ver ve adresini oluştur(new le).Reflaction ile yapar.
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

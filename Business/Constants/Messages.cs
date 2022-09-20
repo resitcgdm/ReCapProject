@@ -28,5 +28,12 @@ namespace Business.Constants
         public static string CarCountOfBrandError="Aynı markadan en fazla 15 araba listelenebilir";
         public static string CarNameAlreadyExists = "Böyle bir isimde araba zaten var";
         public static string CategoryLimitExceded = "Kategori limiti aşıldı";
+        public static string ACarCanNotMoreThan5Images="Bir araba için 5 resimden fazlası yüklenemez ";
+        public static string ImageNotFound="Resim bulunamadı";
+        public static string ImageDeleted="Resim silindi";
+        public static string ErrorMessage="Hata!!";
+        public static string ImageUpdated="Resim yüklendi";
+        public static string ImageError="Resim hatası";
+        public static string ImageAdded="Resim eklendi";
     }
 }
